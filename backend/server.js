@@ -1,34 +1,35 @@
 // server.js
 
-// 1. Import necessary libraries
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// 2. Initialize an Express application
 const app = express();
-const PORT = 5000; // We'll run our backend on port 5000
-// 3. Set up Middleware
-app.use(cors()); 
+
+// ✅ Use Render’s port or default to 5000 locally
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
 app.use(express.json());
 
-
-// ---- ADD THIS NEW CODE BLOCK ----
-// This is our new "welcome" route for the main URL
-app.get('/', (req, res) => {
-    res.send('<h1>✅ AgriSolution Backend is running!</h1><p>This server is waiting for POST requests from the frontend.</p>');
+// ---- Welcome Route ----
+app.get('/health', (req, res) => {
+  res.send('<h1>✅ AgriSolution Backend is running!</h1><p>This server is waiting for POST requests from the frontend.</p>');
 });
-// ---------------------------------
 
+// ✅ Serve frontend (update folder if different)
+app.use(express.static(path.join(__dirname, 'pages')));
 
-// 4. Import our API routes
+// Catch-all route → send index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'index.html'));
+});
+
+// ✅ API routes
 const apiRoutes = require('./routes/api');
-
-// 5. Tell Express to use our routes
-// Any URL starting with /api will be handled by the router we just imported.
 app.use('/api', apiRoutes);
 
-// 6. Start the server
+// ✅ Start server
 app.listen(PORT, () => {
-    console.log(`✅ Backend server is running successfully on http://localhost:${PORT}`);
+  console.log(`✅ Backend server running on port ${PORT}`);
 });
