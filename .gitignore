@@ -1,0 +1,11 @@
+# Dependencies
+/node_modules
+
+# Uploads from the demo
+/backend/uploads
+
+# VS Code settings
+.vscode/
+
+# OS-specific files
+.DS_Storeclear

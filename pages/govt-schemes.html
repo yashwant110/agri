@@ -1,0 +1,78 @@
+<!-- pages/govt-schemes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page5_title">Government Schemes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style-wow.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="../static/images/logo.svg" alt="Logo"><a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a></div>
+            <div class="nav-controls"><div class="language-switcher"><select id="language-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></div></div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <h1 class="feature-title"><img src="../static/images/scheme.svg" alt="Scheme Icon"><span data-key="page5_title">Government Schemes</span></h1>
+        <p class="feature-description" data-key="page5_desc">There are many government schemes to help you. Enter your details to find the ones you are eligible for, explained in your language.</p>
+        
+        <div class="interactive-form">
+            <label for="state-input" data-key="state_label">Enter Your State:</label>
+            <input type="text" id="state-input" placeholder-key="state_placeholder">
+            <label for="crop-input" data-key="crop_label">Enter Your Main Crop:</label>
+            <input type="text" id="crop-input" placeholder-key="crop_placeholder">
+            <button class="btn-primary" data-key="find_schemes_button">Find Schemes</button>
+        </div>
+    </main>
+
+    <footer><p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p></footer>
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+    <script>
+    const findBtn = document.querySelector('.btn-primary');
+    const stateInput = document.getElementById('state-input'); // Make sure your input has this ID
+    const cropInput = document.getElementById('crop-input');   // Make sure your input has this ID
+    const resultsSection = document.getElementById('resultsSection');
+
+    findBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        resultsSection.style.display = 'block';
+        resultsSection.innerHTML = '<p>Searching for relevant schemes...</p>';
+
+        const stateValue = stateInput.value;
+        const cropValue = cropInput.value;
+
+        fetch('http://localhost:5000/api/predict/schemes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state: stateValue, crop: cropValue })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Clear the "searching" message
+            resultsSection.innerHTML = '<h2>Relevant Schemes</h2>';
+            if (!data || data.length === 0) {
+                resultsSection.innerHTML += '<p>No schemes found matching your criteria.</p>';
+                return;
+            }
+            
+            // Build the list of schemes from the response
+            let html = '<ul>';
+            data.forEach(scheme => {
+                html += `<li><strong>${scheme.name} (${scheme.state}):</strong> ${scheme.details}</li>`;
+            });
+            html += '</ul>';
+            resultsSection.innerHTML += html;
+        })
+        .catch(err => {
+            console.error(err);
+            resultsSection.innerHTML = '<p>Error connecting to the server.</p>';
+        });
+    });
+</script>
+</body>
+</html>

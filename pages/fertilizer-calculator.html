@@ -1,0 +1,38 @@
+<!-- pages/fertilizer-calculator.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page4_title">Fertilizer Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style-wow.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="../static/images/logo.svg" alt="Logo"><a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a></div>
+            <div class="nav-controls"><div class="language-switcher"><select id="language-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></div></div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <h1 class="feature-title"><img src="../static/images/fertilizer.svg" alt="Fertilizer Icon"><span data-key="page4_title">Fertilizer Calculator</span></h1>
+        <p class="feature-description" data-key="page4_desc">Don't waste money on the wrong fertilizers. Enter your soil test values to get a recommendation for the perfect NPK mix.</p>
+        
+        <div class="interactive-form">
+            <label for="soil-n" data-key="nitrogen_label">Nitrogen (N) value:</label>
+            <input type="text" id="soil-n">
+            <label for="soil-p" data-key="phosphorus_label">Phosphorus (P) value:</label>
+            <input type="text" id="soil-p">
+            <label for="soil-k" data-key="potassium_label">Potassium (K) value:</label>
+            <input type="text" id="soil-k">
+            <button class="btn-primary" data-key="calculate_button">Calculate Mix</button>
+        </div>
+    </main>
+
+    <footer><p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p></footer>
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!-- pages/disease-detection.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page1_title">Crop Disease & Soil Health</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Section (Same as index.html but with corrected paths) -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/static/images/logo.svg" alt="Logo">
+                <a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a>
+            </div>
+            <div class="nav-controls">
+                <div class="language-switcher">
+                    <select id="language-select">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="te">తెలుగు</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <div class="feature-header">
+            <h1 class="feature-title">
+                <img src="/static/images/disease.svg" alt="Disease Icon">
+                <span data-key="page1_title">Crop Disease & Soil Health</span>
+            </h1>
+            <p class="feature-description" data-key="page1_desc">
+                Our advanced AI analyzes images of plant leaves or soil to identify potential diseases and nutrient deficiencies. Get instant results and actionable advice.
+            </p>
+        </div>
+
+        <div class="upload-section">
+            <img 
+                src="/static/images/audio-icon.svg" 
+                alt="Play audio instruction" 
+                class="audio-cue"
+                data-audio-cue-key="upload_instruction"
+            >
+            <input type="file" id="imageUpload" accept="image/*">
+            <label for="imageUpload" class="upload-label" data-key="feature1_desc">
+                Choose or Drag Image
+            </label>
+        </div>
+        
+        <div style="text-align: center;">
+             <button type="button" class="btn-primary">Analyze Image</button>
+        </div>
+
+       <!-- This is the MODIFIED code -->
+<div class="results-section" style="display: none; margin-top: 30px;">
+        <h2>Analysis Result</h2>
+        <p><strong>Disease:</strong> <span id="diseaseName"></span></p>
+        <p><strong>Suggestion:</strong> <span id="suggestionText"></span></p>
+        
+        <!-- ADD THIS BUTTON -->
+        <button type="button" id="speakBtn" class="btn-primary" data-key="speak_btn" style="margin-top: 15px; display: none;">
+            Read Aloud
+        </button>
+    </div>
+
+    </main>
+
+    <!-- Footer (Same as index.html but with corrected paths) -->
+    <footer>
+        <p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p>
+    </footer>
+
+    <!-- Scripts (with corrected paths) -->
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+        <script>
+        // Get the HTML elements
+        const analyzeBtn = document.querySelector('.btn-primary');
+        const fileInput = document.getElementById('imageUpload');
+        const resultsSection = document.querySelector('.results-section');
+        const diseaseNameSpan = document.getElementById('diseaseName');
+        const suggestionTextSpan = document.getElementById('suggestionText');
+        const speakBtn = document.getElementById('speakBtn'); // Get the new button
+
+        // --- Analyze Button Logic ---
+        analyzeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            if (fileInput.files.length === 0) {
+                alert('Please select an image file first.');
+                return;
+            }
+             
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Show loading message and hide the speak button initially
+            diseaseNameSpan.innerText = 'Analyzing, please wait...';
+            suggestionTextSpan.innerText = '';
+            speakBtn.style.display = 'none'; // Hide button during analysis
+            resultsSection.style.display = 'block';
+
+            // Fetch data from the backend
+            fetch('http://localhost:5000/api/predict/disease', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                diseaseNameSpan.innerText = data.disease;
+                suggestionTextSpan.innerText = data.suggestion;
+                
+                // Show the "Read Aloud" button ONLY if the result is valid
+                if (data.disease !== 'Disease Not Recognized') {
+                    speakBtn.style.display = 'inline-block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Could not connect to the backend.');
+                diseaseNameSpan.innerText = 'Error connecting to server.';
+            });
+        });
+
+        // --- NEW: Speak Button Logic ---
+        speakBtn.addEventListener('click', () => {
+            // Get the text content from the result spans
+            const disease = diseaseNameSpan.innerText;
+            const suggestion = suggestionTextSpan.innerText;
+            
+            // Get the currently selected language from the browser's storage
+            const currentLang = localStorage.getItem('language') || 'en';
+            
+            // Map our simple lang codes to the official codes required by the browser
+            const langCode = {
+                en: 'en-US',
+                hi: 'hi-IN',
+                te: 'te-IN'
+            }[currentLang];
+            
+            // Combine the text for a natural-sounding phrase
+            const textToSpeak = `The detected disease is ${disease}. The suggestion is: ${suggestion}`;
+            
+            // Call the global speakText function we defined in main.js
+            window.speakText(textToSpeak, langCode);
+        });
+    </script>
+
+</body>
+</html>

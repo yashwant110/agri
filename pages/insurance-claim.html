@@ -1,0 +1,37 @@
+<!-- pages/insurance-claim.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page6_title">Crop Insurance Claims</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style-wow.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="../static/images/logo.svg" alt="Logo"><a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a></div>
+            <div class="nav-controls"><div class="language-switcher"><select id="language-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></div></div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <h1 class="feature-title"><img src="../static/images/insurance.svg" alt="Insurance Icon"><span data-key="page6_title">Crop Insurance Claims</span></h1>
+        <p class="feature-description" data-key="page6_desc">Filing an insurance claim after crop loss can be difficult. We make it easy. Just upload a photo of the damage and we'll help you start the process.</p>
+        
+        <div class="upload-section">
+             <img src="../static/images/audio-icon.svg" alt="Play audio instruction" class="audio-cue" data-audio-cue-key="claim_instruction">
+            <input type="file" id="imageUpload" accept="image/*">
+            <label for="imageUpload" class="upload-label" data-key="upload_damage_photo">Upload Damage Photo</label>
+        </div>
+        <div style="text-align: center;">
+             <button class="btn-primary" data-key="file_claim_button">File Claim</button>
+        </div>
+    </main>
+
+    <footer><p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p></footer>
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+</body>
+</html>

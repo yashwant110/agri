@@ -1,0 +1,257 @@
+/* static/css/style-wow.css */
+
+/* --- Global Styles & Wow Variables --- */
+:root {
+    --primary-green: #2a7f40;
+    --light-green: #89e28d;
+    --dark-text: #2c3e50;
+    --white: #ffffff;
+    --light-bg: #f8f9fa;
+    --accent-yellow: #fbc531;
+    --main-gradient: linear-gradient(135deg, var(--light-green), var(--primary-green));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- Header & Dynamic Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.4s ease;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo .site-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.language-switcher select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.language-switcher select:hover {
+    border-color: var(--primary-green);
+}
+
+/* --- Gradient Hero Section --- */
+.hero {
+    background: var(--main-gradient);
+    color: var(--white);
+    text-align: center;
+    padding: 120px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f8f9fa' fill-opacity='1' d='M0,160L48,181.3C96,203,192,245,288,245.3C384,245,480,203,576,186.7C672,171,768,181,864,197.3C960,213,1056,235,1152,218.7C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    font-weight: 300;
+}
+
+/* --- WOW Feature Grid --- */
+.features-grid {
+    padding: 50px 5%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 600;
+    margin-bottom: 50px;
+    color: var(--dark-text);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-top: 4px solid transparent;
+    border-image: var(--main-gradient) 1;
+}
+
+.feature-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.feature-card img {
+    height: 70px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover img {
+    transform: scale(1.1);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--dark-text);
+    color: var(--white);
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+/* --- WOW Styles for Feature Pages --- */
+.feature-page-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.feature-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 2.5rem;
+    background-image: var(--main-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.feature-title img {
+    height: 50px;
+}
+
+.feature-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+.interactive-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.interactive-form label {
+    font-weight: 600;
+    color: var(--primary-green);
+}
+
+.interactive-form input[type="text"] {
+    padding: 15px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.interactive-form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 10px rgba(86, 171, 47, 0.2);
+}
+
+.btn-primary {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 15px 30px;
+    background: var(--main-gradient);
+    color: var(--white);
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+}

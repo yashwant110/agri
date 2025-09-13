@@ -1,0 +1,73 @@
+<!-- pages/market-prices.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page2_title">Market Prices & Buyers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style-wow.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="../static/images/logo.svg" alt="Logo"><a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a></div>
+            <div class="nav-controls"><div class="language-switcher"><select id="language-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></div></div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <h1 class="feature-title"><img src="../static/images/market.svg" alt="Market Icon"><span data-key="page2_title">Market Prices & Buyers</span></h1>
+        <p class="feature-description" data-key="page2_desc">Stop guessing. Get live prices from nearby mandis and discover potential buyers for your produce to get the best possible rate.</p>
+        
+<div class="interactive-form">
+    <label for="locationInput" data-key="location_label">Enter your City or Mandi Name:</label>
+    <input type="text" id="locationInput" placeholder-key="location_placeholder">
+    <button type="button" class="btn-primary" data-key="search_button">Search Prices</button>
+</div>
+
+<div id="resultsSection" class="results-section" style="margin-top: 30px; display: none;">
+    <h2 data-key="results_title">Live Rates</h2>
+    <p><strong>Market:</strong> <span id="marketName"></span></p>
+    <p><strong>Price:</strong> <span id="marketPrice"></span></p>
+    <p><strong>Trend:</strong> <span id="marketTrend"></span></p>
+</div>
+    </main>
+
+    <footer><p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p></footer>
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+    <script>
+    const searchBtn = document.querySelector('.btn-primary');
+    const locationInput = document.getElementById('locationInput');
+    const resultsSection = document.getElementById('resultsSection');
+    const marketNameSpan = document.getElementById('marketName');
+    const marketPriceSpan = document.getElementById('marketPrice');
+    const marketTrendSpan = document.getElementById('marketTrend');
+
+    searchBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        resultsSection.style.display = 'block';
+        marketNameSpan.innerText = 'Searching...';
+        marketPriceSpan.innerText = '';
+        marketTrendSpan.innerText = '';
+        
+        fetch('http://localhost:5000/api/predict/market', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ location: locationInput.value })
+        })
+        .then(res => res.json())
+        .then(data => {
+            marketNameSpan.innerText = `${data.location} - ${data.crop}`;
+            marketPriceSpan.innerText = data.price;
+            marketTrendSpan.innerText = data.trend;
+        })
+        .catch(err => {
+            console.error(err);
+            marketNameSpan.innerText = 'Error connecting to server.';
+        });
+    });
+</script>
+</body>
+</html>

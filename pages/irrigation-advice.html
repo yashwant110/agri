@@ -1,0 +1,82 @@
+<!-- pages/irrigation-advice.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="page3_title">Smart Irrigation Advice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style-wow.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="../static/images/logo.svg" alt="Logo"><a href="../index.html" class="site-name" data-key="site_title">AgriSolution</a></div>
+            <div class="nav-controls"><div class="language-switcher"><select id="language-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></div></div>
+        </nav>
+    </header>
+
+    <main class="feature-page-container">
+        <h1 class="feature-title"><img src="../static/images/water.svg" alt="Irrigation Icon"><span data-key="page3_title">Smart Irrigation Advice</span></h1>
+        <p class="feature-description" data-key="page3_desc">Save water and protect your crops. Based on weather forecasts and soil type, we'll tell you the right time to irrigate.</p>
+        
+       <div class="interactive-form">
+    <label for="cropInput" data-key="crop_label">Select Your Crop:</label>
+    <input type="text" id="cropInput" placeholder-key="crop_placeholder">
+    <button type="button" class="btn-primary" data-key="advice_button">Get Advice</button>
+</div>
+
+<div id="resultsSection" class="results-section" style="margin-top: 30px; display: none;">
+    <h2 data-key="recommendation_title">Our Recommendation</h2>
+    <p><span id="adviceText"></span></p>
+    <button type="button" id="speakBtn" class="btn-primary" style="margin-top: 15px; display: none;">Read Aloud</button>
+</div>
+    </main>
+
+    <footer><p>&copy; 2025 AgriSolution. <span data-key="footer_text">All Rights Reserved.</span></p></footer>
+    <script src="../static/js/translations.js"></script>
+    <script src="../static/js/main.js"></script>
+    <script>
+    const getAdviceBtn = document.querySelector('.btn-primary');
+    const cropInput = document.getElementById('cropInput');
+    const resultsSection = document.getElementById('resultsSection');
+    const adviceTextSpan = document.getElementById('adviceText');
+    const speakBtn = document.getElementById('speakBtn');
+
+    getAdviceBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        resultsSection.style.display = 'block';
+        adviceTextSpan.innerText = 'Calculating...';
+        speakBtn.style.display = 'none';
+
+        fetch('http://localhost:5000/api/predict/irrigation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ crop: cropInput.value })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // THE FIX IS HERE: We check if data.advice exists before trying to display it.
+            if (data && data.advice) {
+                adviceTextSpan.innerText = data.advice;
+                speakBtn.style.display = 'inline-block';
+            } else {
+                // If it doesn't exist, show a user-friendly error.
+                adviceTextSpan.innerText = 'Sorry, advice could not be retrieved at this time.';
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            adviceTextSpan.innerText = 'Error connecting to server.';
+        });
+    });
+
+    speakBtn.addEventListener('click', () => {
+        const textToSpeak = adviceTextSpan.innerText;
+        const currentLang = localStorage.getItem('language') || 'en';
+        const langCode = { en: 'en-US', hi: 'hi-IN', te: 'te-IN' }[currentLang];
+        window.speakText(textToSpeak, langCode);
+    });
+</script>
+</body>
+</html>
